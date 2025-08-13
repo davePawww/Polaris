@@ -1,0 +1,129 @@
+---
+
+description: Project structure, important files, and directories for the Polaris project
+globs: **/*
+alwaysApply: false
+
+---
+
+# Polaris Project Structure
+
+This document outlines the directory structure and important files in the Polaris project, which is a full-stack application with separate frontend and backend directories.
+
+## Root Directory Structure
+
+```
+Polaris/
+├── .cursor/                    # Cursor IDE configuration and rules
+├── frontend/                   # React + TypeScript frontend application
+├── backend/                    # NestJS + TypeScript backend application
+├── README.md                   # Project overview and documentation
+└── LICENSE                     # Project license
+```
+
+## Frontend Directory (`frontend/`)
+
+### Configuration Files
+
+- `package.json` - Frontend dependencies and scripts
+- `pnpm-lock.yaml` - Locked dependency versions
+- `vite.config.ts` - Vite build tool configuration
+- `tsconfig.json` - TypeScript configuration
+- `tsconfig.app.json` - App-specific TypeScript settings
+- `tsconfig.node.json` - Node.js TypeScript settings
+- `eslint.config.js` - ESLint linting configuration
+- `components.json` - UI component library configuration
+- `index.html` - Main HTML entry point
+
+### Source Code (`src/`)
+
+- `main.tsx` - React application entry point
+- `App.tsx` - Main React application component
+- `App.css` - Main application styles
+- `index.css` - Global CSS styles
+- `vite-env.d.ts` - Vite environment type definitions
+
+#### Components (`src/components/`)
+
+- `ui/` - Reusable UI components
+  - `button.tsx` - Button component implementation
+
+#### Features (`src/features/`)
+
+- Currently empty - reserved for feature-based organization
+
+#### Library (`src/lib/`)
+
+- `utils.ts` - Utility functions and helpers
+
+#### Assets (`src/assets/`)
+
+- Currently empty - reserved for static assets
+
+#### Public (`public/`)
+
+- Static files served directly
+
+## Backend Directory (`backend/`)
+
+### Configuration Files
+
+- `package.json` - Backend dependencies and scripts
+- `pnpm-lock.yaml` - Locked dependency versions
+- `tsconfig.json` - TypeScript configuration
+- `tsconfig.build.json` - Build-specific TypeScript settings
+- `nest-cli.json` - NestJS CLI configuration
+- `eslint.config.mjs` - ESLint configuration
+- `.prettierrc` - Prettier code formatting configuration
+- `.gitignore` - Git ignore patterns
+
+### Source Code (`src/`)
+
+- `main.ts` - Application entry point
+- `app.module.ts` - Root application module
+- `app.controller.ts` - Main application controller
+- `app.service.ts` - Main application service
+- `app.controller.spec.ts` - Controller unit tests
+
+### Testing (`test/`)
+
+- `app.e2e-spec.ts` - End-to-end test specifications
+- `jest-e2e.json` - Jest E2E testing configuration
+
+## Cursor Rules (`.cursor/rules/`)
+
+- `cursor-rules.mdc` - How to add/edit Cursor rules
+- `self-improvement.mdc` - Self-improvement guidelines
+- `project-structure.mdc` - This file
+
+## Key Technologies
+
+### Frontend
+
+- **React 18** with TypeScript
+- **Vite** for build tooling
+- **Tailwind CSS** (via components.json)
+- **pnpm** for package management
+
+### Backend
+
+- **NestJS** framework
+- **TypeScript** for type safety
+- **Jest** for testing
+- **ESLint + Prettier** for code quality
+
+## Development Workflow
+
+1. **Frontend Development**: Work in `frontend/src/` directory
+2. **Backend Development**: Work in `backend/src/` directory
+3. **Shared Configuration**: Update root-level files as needed
+4. **Testing**: Use respective test directories in each project
+5. **Package Management**: Use `pnpm` for both frontend and backend
+
+## Important Notes
+
+- Both frontend and backend use TypeScript with strict configurations
+- ESLint and Prettier are configured for consistent code style
+- Testing frameworks are set up for both unit and E2E testing
+- The project follows a monorepo structure with separate package.json files
+- Cursor rules are maintained in `.cursor/rules/` for development consistency

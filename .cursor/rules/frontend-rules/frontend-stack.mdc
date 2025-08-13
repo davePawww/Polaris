@@ -1,0 +1,211 @@
+---
+description: Frontend technology stack, versions, and best practices for the Polaris project
+globs: frontend/**/*
+alwaysApply: false
+---
+
+# Frontend Technology Stack
+
+This document outlines the frontend technology stack, versions, and best practices for the Polaris project.
+
+## Core Framework
+
+### React 19.1.1
+
+- **Version**: ^19.1.1 (latest major version)
+- **TypeScript Support**: Full TypeScript support with @types/react ^19.1.9
+- **Best Practices**:
+  - Use React 19's new features like `use()` hook and concurrent features
+  - Leverage automatic batching for better performance
+  - Use React Server Components where applicable
+  - Follow React 19's new patterns for data fetching
+
+### React DOM 19.1.1
+
+- **Version**: ^19.1.1
+- **TypeScript Support**: @types/react-dom ^19.1.7
+- **Best Practices**:
+  - Ensure proper hydration with SSR considerations
+  - Use modern DOM APIs when available
+
+## Build Tools
+
+### Vite 7.1.0
+
+- **Version**: ^7.1.0 (latest major version)
+- **Plugin**: @vitejs/plugin-react ^4.7.0
+- **Best Practices**:
+  - Leverage Vite's fast HMR for development
+  - Use Vite's built-in TypeScript support
+  - Configure proper build optimizations for production
+  - Utilize Vite's environment variable handling
+
+### TypeScript 5.8.3
+
+- **Version**: ~5.8.3 (latest stable)
+- **Configuration**: Strict TypeScript configuration
+- **Best Practices**:
+  - Use strict mode for better type safety
+  - Leverage TypeScript 5.8's new features
+  - Use proper type annotations for all components
+  - Implement proper interface definitions
+
+## Styling & UI
+
+### Tailwind CSS 4.1.11
+
+- **Version**: ^4.1.11 (latest major version)
+- **Vite Integration**: @tailwindcss/vite ^4.1.11
+- **Best Practices**:
+  - Use Tailwind v4's new CSS-in-JS approach
+  - Leverage the new `@apply` directive syntax
+  - Use CSS variables for custom design tokens
+  - Implement responsive design with Tailwind's breakpoint system
+  - Use Tailwind's new color palette system
+
+### UI Component Libraries
+
+- **shadcn/ui**: Component library built on Radix UI primitives
+  - **Best Practices**:
+    - Use `npx shadcn@latest add [component]` to add new components
+    - Customize components in `src/components/ui/` directory
+    - Follow the component composition pattern
+    - Use `cn()` utility for conditional class merging
+    - Maintain consistent component API patterns
+- **Radix UI**: @radix-ui/react-slot ^1.2.3
+  - **Best Practices**: Use for accessible, unstyled components
+  - **Integration**: shadcn/ui components are built on top of Radix primitives
+- **Lucide React**: ^0.539.0
+  - **Best Practices**: Use for consistent iconography
+- **Class Variance Authority**: ^0.7.1
+  - **Best Practices**: Use for component variant management
+- **clsx & tailwind-merge**: For conditional class handling
+  - **Best Practices**: Use `cn()` utility function for merging classes
+
+## Development Tools
+
+### ESLint 9.32.0
+
+- **Version**: ^9.32.0 (latest major version)
+- **Configuration**: Modern flat config format
+- **Plugins**:
+  - @eslint/js: ^9.32.0
+  - eslint-plugin-react-hooks: ^5.2.0
+  - eslint-plugin-react-refresh: ^0.4.20
+  - typescript-eslint: ^8.39.0
+- **Best Practices**:
+  - Use the new flat config format
+  - Enable React Hooks rules
+  - Use TypeScript-specific linting rules
+  - Configure proper import sorting
+
+### Package Management
+
+- **Package Manager**: pnpm
+- **Lock File**: pnpm-lock.yaml
+- **Best Practices**:
+  - Use pnpm for faster, more efficient package management
+  - Keep lock file in version control
+  - Use exact versions for critical dependencies
+
+## Animation & Utilities
+
+### tw-animate-css 1.3.6
+
+- **Version**: ^1.3.6
+- **Best Practices**:
+  - Use for CSS-based animations
+  - Combine with Tailwind's transition utilities
+  - Implement smooth user interactions
+
+## Development Scripts
+
+```json
+{
+	"dev": "vite", // Development server with HMR
+	"build": "tsc -b && vite build", // Type check + build
+	"lint": "eslint .", // Lint all files
+	"preview": "vite preview" // Preview production build
+}
+```
+
+## shadcn/ui Best Practices
+
+### Component Management
+
+- **Adding Components**: Use `npx shadcn@latest add [component-name]`
+- **Customization**: Modify components in `src/components/ui/` directory
+- **Theming**: Use CSS variables for consistent design tokens
+- **Variants**: Leverage Class Variance Authority for component variants
+
+### File Organization
+
+```
+src/components/ui/
+├── button.tsx          # Button component
+├── input.tsx           # Input component
+├── dialog.tsx          # Dialog component
+└── ...                 # Other UI components
+```
+
+### Utility Functions
+
+- **`cn()` Function**: Use for conditional class merging
+- **`cva()` Function**: Use for component variant definitions
+- **`clsx` & `tailwind-merge**: For advanced class handling
+
+### Component Patterns
+
+- **Composition**: Use compound component patterns
+- **Props**: Extend HTML element props with `React.HTMLAttributes`
+- **Forwarding**: Use `forwardRef` for form components
+- **Accessibility**: Leverage Radix UI's built-in accessibility features
+
+## Best Practices Summary
+
+### Performance
+
+- Use React 19's concurrent features
+- Implement proper code splitting with Vite
+- Optimize Tailwind CSS output
+- Use proper TypeScript types for better tree-shaking
+
+### Development Experience
+
+- Leverage Vite's fast HMR
+- Use strict TypeScript configuration
+- Follow ESLint rules consistently
+- Use pnpm for faster package management
+
+### Code Quality
+
+- Implement proper TypeScript interfaces
+- Use modern React patterns (hooks, functional components)
+- Follow Tailwind CSS utility-first approach
+- Maintain consistent component architecture
+- Use shadcn/ui component patterns and utilities
+- Leverage `cn()` function for conditional styling
+- Follow component composition best practices
+
+### Accessibility
+
+- Use Radix UI components for complex interactions
+- Implement proper ARIA labels
+- Ensure keyboard navigation support
+- Test with screen readers
+
+## Version Compatibility Notes
+
+- React 19 requires Node.js 18+ and modern browsers
+- Tailwind CSS v4 has breaking changes from v3
+- Vite 7 has improved performance and modern features
+- TypeScript 5.8 includes latest language features
+
+## Migration Considerations
+
+When updating dependencies:
+
+- Check React 19 migration guide for breaking changes
+- Review Tailwind CSS v4 migration path
+- Test Vite 7 compatibility with existing plugins
+- Verify TypeScript 5.8 feature usage
