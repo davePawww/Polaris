@@ -1,17 +1,16 @@
 import Container from './Container';
 import Footer from './Footer';
 import Header from './Header';
+import { Outlet } from 'react-router';
 
-interface LayoutProps {
-  children: React.ReactNode;
-}
-
-export default function Layout({ children }: LayoutProps) {
+export default function Layout() {
   return (
     <div className="bg-background min-h-svh">
       <Header />
       <Container>
-        <main>{children}</main>
+        <main className="flex min-h-svh flex-col items-center justify-center">
+          <Outlet />
+        </main>
       </Container>
       <Footer />
     </div>
