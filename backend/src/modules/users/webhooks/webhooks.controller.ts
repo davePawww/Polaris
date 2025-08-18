@@ -1,0 +1,31 @@
+import { Controller, Post, Req, RawBodyRequest } from '@nestjs/common';
+import { Request } from 'express';
+import { WebhooksService } from './webhooks.service';
+import { verifyWebhook } from '@clerk/express/webhooks';
+import { Public } from 'src/common/decorators/public.decorator';
+
+@Controller('webhooks')
+export class WebhooksController {
+  constructor(private readonly webhooksService: WebhooksService) {}
+
+  @Public()
+  @Post('clerk')
+  async handleClerkWebhook(@Req() req: RawBodyRequest<Request>) {
+    try {
+      const evt = await verifyWebhook(req);
+
+      // Log the webhook details
+      const { id } = evt.data;
+      const eventType = evt.type;
+      console.log(
+        `Received webhook with ID ${id} and event type of ${eventType}`,
+      );
+      console.log('Webhook payload:', evt.data);
+
+      return this.webhooksService.handleClerkWebhook(evt);
+    } catch (err) {
+      console.error('Error verifying webhook:', err);
+      throw new Error('Error verifying webhook');
+    }
+  }
+}
