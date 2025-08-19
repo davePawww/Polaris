@@ -16,26 +16,26 @@ export class UsersController {
 
   @Post()
   create(@Body() data: Prisma.UserCreateInput) {
-    return this.usersService.createUser(data);
+    return this.usersService.create(data);
   }
 
   @Get()
   findAll() {
-    return this.usersService.users({});
+    return this.usersService.findAll({});
   }
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.usersService.user({ id });
+    return this.usersService.findOne({ id });
   }
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() data: Prisma.UserUpdateInput) {
-    return this.usersService.updateUser({ where: { id }, data });
+    return this.usersService.update({ where: { id }, data });
   }
 
   @Delete(':id')
   delete(@Param('id') id: string) {
-    return this.usersService.deleteUser({ id });
+    return this.usersService.delete({ id });
   }
 }
