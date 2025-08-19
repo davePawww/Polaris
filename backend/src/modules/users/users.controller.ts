@@ -6,6 +6,7 @@ import {
   Param,
   Patch,
   Post,
+  Query,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { Prisma } from '@prisma/client';
@@ -20,8 +21,23 @@ export class UsersController {
   }
 
   @Get()
-  findAll() {
-    return this.usersService.findAll({});
+  findMany(
+    @Query()
+    query: {
+      skip?: string;
+      take?: string;
+      cursor?: string;
+      where?: string;
+      orderBy?: string;
+    },
+  ) {
+    return this.usersService.findMany({
+      skip: query.skip ? Number(query.skip) : undefined,
+      take: query.take ? Number(query.take) : undefined,
+      cursor: query.cursor ? { id: query.cursor } : undefined,
+      where: query.where ? JSON.parse(query.where) : undefined,
+      orderBy: query.orderBy ? JSON.parse(query.orderBy) : undefined,
+    });
   }
 
   @Get(':id')

@@ -12,7 +12,7 @@ export class UsersService {
     });
   }
 
-  async findAll(params: {
+  async findMany(params: {
     skip?: number;
     take?: number;
     cursor?: Prisma.UserWhereUniqueInput;
