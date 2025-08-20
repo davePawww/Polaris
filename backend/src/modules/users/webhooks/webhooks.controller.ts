@@ -27,7 +27,6 @@ export class WebhooksController {
       console.log(
         `Received webhook with ID ${id} and event type of ${eventType}`,
       );
-      console.log('Webhook payload:', evt.data);
 
       return this.webhooksService.handleClerkWebhook(evt);
     } catch (error) {
