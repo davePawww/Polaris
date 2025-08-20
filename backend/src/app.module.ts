@@ -1,17 +1,19 @@
-import { ConfigModule } from '@nestjs/config';
 import { Module } from '@nestjs/common';
+import { ConfigModule } from '@nestjs/config';
+import { APP_FILTER, APP_GUARD } from '@nestjs/core';
 import { AppController } from './app.controller';
 // Services
 import { AppService } from './app.service';
 import { ClerkService } from './common/auth/clerk.service';
 // Modules
 import { PrismaModule } from './database/prisma.module';
-import { UsersModule } from './modules/users/users.module';
 import { WebhooksModule } from './modules/users/webhooks/webhooks.module';
+import { UsersModule } from './modules/users/users.module';
+import { GoalsModule } from './modules/goals/goals.module';
 // Guards
 import { JwtAuthGuard } from './common/auth/jwt-auth.guard';
-import { APP_GUARD } from '@nestjs/core';
-import { GoalsModule } from './modules/goals/goals.module';
+// Filters
+import { GlobalExceptionFilter } from './common/filters/global-exception.filter';
 
 @Module({
   imports: [
@@ -30,6 +32,10 @@ import { GoalsModule } from './modules/goals/goals.module';
     {
       provide: APP_GUARD,
       useClass: JwtAuthGuard,
+    },
+    {
+      provide: APP_FILTER,
+      useClass: GlobalExceptionFilter,
     },
   ],
 })
