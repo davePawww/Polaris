@@ -1,15 +1,21 @@
 import { Injectable } from '@nestjs/common';
 import { Prisma, User } from '@prisma/client';
+import { createPrismaErrorHandler } from 'src/common/helpers/prisma-errors.util';
 import { PrismaService } from 'src/database/prisma.service';
 
 @Injectable()
 export class UsersService {
+  private readonly handleError = createPrismaErrorHandler('User');
   constructor(private readonly prisma: PrismaService) {}
 
   async create(data: Prisma.UserCreateInput): Promise<User> {
-    return this.prisma.user.create({
-      data,
-    });
+    try {
+      return this.prisma.user.create({
+        data,
+      });
+    } catch (error) {
+      return this.handleError(error);
+    }
   }
 
   async findMany(params: {
@@ -42,15 +48,23 @@ export class UsersService {
     data: Prisma.UserUpdateInput;
   }): Promise<User> {
     const { where, data } = params;
-    return this.prisma.user.update({
-      data,
-      where,
-    });
+    try {
+      return this.prisma.user.update({
+        data,
+        where,
+      });
+    } catch (error) {
+      return this.handleError(error);
+    }
   }
 
   async delete(where: Prisma.UserWhereUniqueInput): Promise<User> {
-    return this.prisma.user.delete({
-      where,
-    });
+    try {
+      return this.prisma.user.delete({
+        where,
+      });
+    } catch (error) {
+      return this.handleError(error);
+    }
   }
 }
