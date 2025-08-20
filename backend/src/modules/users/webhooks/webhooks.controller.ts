@@ -1,4 +1,11 @@
-import { Controller, Post, Req, RawBodyRequest } from '@nestjs/common';
+import {
+  Controller,
+  Post,
+  Req,
+  RawBodyRequest,
+  UnauthorizedException,
+  InternalServerErrorException,
+} from '@nestjs/common';
 import { Request } from 'express';
 import { WebhooksService } from './webhooks.service';
 import { verifyWebhook } from '@clerk/express/webhooks';
@@ -23,9 +30,10 @@ export class WebhooksController {
       console.log('Webhook payload:', evt.data);
 
       return this.webhooksService.handleClerkWebhook(evt);
-    } catch (err) {
-      console.error('Error verifying webhook:', err);
-      throw new Error('Error verifying webhook');
+    } catch (error) {
+      if (error.message.includes('Invalid signature'))
+        throw new UnauthorizedException('Invalid webhook signature');
+      throw new InternalServerErrorException('Error verifying webhook');
     }
   }
 }
