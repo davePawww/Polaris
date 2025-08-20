@@ -11,6 +11,7 @@ import { WebhooksModule } from './modules/users/webhooks/webhooks.module';
 // Guards
 import { JwtAuthGuard } from './common/auth/jwt-auth.guard';
 import { APP_GUARD } from '@nestjs/core';
+import { GoalsModule } from './modules/goals/goals.module';
 
 @Module({
   imports: [
@@ -18,8 +19,9 @@ import { APP_GUARD } from '@nestjs/core';
       isGlobal: true,
     }),
     PrismaModule,
-    UsersModule,
     WebhooksModule,
+    UsersModule,
+    GoalsModule,
   ],
   controllers: [AppController],
   providers: [
