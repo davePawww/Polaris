@@ -20,15 +20,7 @@ export class WebhooksController {
   async handleClerkWebhook(@Req() req: RawBodyRequest<Request>) {
     try {
       const evt = await verifyWebhook(req);
-
-      // Log the webhook details
-      const { id } = evt.data;
-      const eventType = evt.type;
-      console.log(
-        `Received webhook with ID ${id} and event type of ${eventType}`,
-      );
-
-      return this.webhooksService.handleClerkWebhook(evt);
+      return await this.webhooksService.handleClerkWebhook(evt);
     } catch (error) {
       if (error.message.includes('Invalid signature'))
         throw new UnauthorizedException('Invalid webhook signature');

@@ -7,8 +7,8 @@ import { AppService } from './app.service';
 import { ClerkService } from './common/auth/clerk.service';
 // Modules
 import { PrismaModule } from './database/prisma.module';
-import { WebhooksModule } from './modules/users/webhooks/webhooks.module';
 import { UsersModule } from './modules/users/users.module';
+import { WebhooksModule } from './modules/users/webhooks/webhooks.module';
 import { GoalsModule } from './modules/goals/goals.module';
 // Guards
 import { JwtAuthGuard } from './common/auth/jwt-auth.guard';
@@ -16,6 +16,7 @@ import { JwtAuthGuard } from './common/auth/jwt-auth.guard';
 import { GlobalExceptionFilter } from './common/filters/global-exception.filter';
 // Middleware
 import { LoggingMiddleware } from './common/middleware/logging.middleware';
+// Zod
 import { ZodSerializerInterceptor, ZodValidationPipe } from 'nestjs-zod';
 
 @Module({
@@ -42,17 +43,16 @@ import { ZodSerializerInterceptor, ZodValidationPipe } from 'nestjs-zod';
     },
     {
       provide: APP_PIPE,
-      useClass: ZodValidationPipe, // Required for validation
+      useClass: ZodValidationPipe,
     },
     {
       provide: APP_INTERCEPTOR,
-      useClass: ZodSerializerInterceptor, // Required for response serialization
+      useClass: ZodSerializerInterceptor,
     },
   ],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
-    // Apply the logging middleware to all routes
     consumer.apply(LoggingMiddleware).forRoutes('*');
   }
 }
