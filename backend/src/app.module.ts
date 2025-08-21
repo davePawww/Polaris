@@ -1,6 +1,6 @@
 import { Module, NestModule, MiddlewareConsumer } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
-import { APP_FILTER, APP_GUARD } from '@nestjs/core';
+import { APP_FILTER, APP_GUARD, APP_INTERCEPTOR, APP_PIPE } from '@nestjs/core';
 import { AppController } from './app.controller';
 // Services
 import { AppService } from './app.service';
@@ -16,6 +16,7 @@ import { JwtAuthGuard } from './common/auth/jwt-auth.guard';
 import { GlobalExceptionFilter } from './common/filters/global-exception.filter';
 // Middleware
 import { LoggingMiddleware } from './common/middleware/logging.middleware';
+import { ZodSerializerInterceptor, ZodValidationPipe } from 'nestjs-zod';
 
 @Module({
   imports: [
@@ -38,6 +39,14 @@ import { LoggingMiddleware } from './common/middleware/logging.middleware';
     {
       provide: APP_FILTER,
       useClass: GlobalExceptionFilter,
+    },
+    {
+      provide: APP_PIPE,
+      useClass: ZodValidationPipe, // Required for validation
+    },
+    {
+      provide: APP_INTERCEPTOR,
+      useClass: ZodSerializerInterceptor, // Required for response serialization
     },
   ],
 })

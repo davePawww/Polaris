@@ -3,6 +3,7 @@ import { ConfigService } from '@nestjs/config';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import helmet from 'helmet';
 import { AppModule } from './app.module';
+import { cleanupOpenApiDoc } from 'nestjs-zod';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -19,7 +20,8 @@ async function bootstrap() {
     .addTag('polaris')
     .build();
   const documentFactory = () => SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('api', app, documentFactory);
+  const openApiDoc = documentFactory();
+  SwaggerModule.setup('api', app, () => cleanupOpenApiDoc(openApiDoc));
 
   app.enableCors({
     origin: allowedOrigins,

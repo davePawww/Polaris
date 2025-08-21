@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { Prisma, User } from '@prisma/client';
 import { createPrismaErrorHandler } from 'src/common/helpers/prisma-errors.util';
+import { PaginationMetadata } from 'src/common/schemas/pagination.schema';
 import { PrismaService } from 'src/database/prisma.service';
 
 @Injectable()
@@ -24,23 +25,51 @@ export class UsersService {
     cursor?: Prisma.UserWhereUniqueInput;
     where?: Prisma.UserWhereInput;
     orderBy?: Prisma.UserOrderByWithRelationInput;
-  }): Promise<User[]> {
-    const { skip, take, cursor, where, orderBy } = params;
-    return this.prisma.user.findMany({
-      skip,
-      take,
-      cursor,
-      where,
-      orderBy,
-    });
+  }): Promise<{
+    data: User[];
+    meta: PaginationMetadata;
+  }> {
+    const { skip = 0, take = 10, ...rest } = params;
+    try {
+      const users = await this.prisma.user.findMany({
+        skip,
+        take,
+        ...rest,
+      });
+
+      const total = await this.prisma.user.count({ where: rest.where });
+
+      const page = Math.floor(skip / take) + 1;
+      const totalPages = Math.ceil(total / take);
+      const hasNext = page < totalPages;
+      const hasPrevious = page > 1;
+
+      return {
+        data: users,
+        meta: {
+          total,
+          page,
+          limit: take,
+          totalPages,
+          hasNext,
+          hasPrevious,
+        },
+      };
+    } catch (error) {
+      return this.handleError(error);
+    }
   }
 
   async findOne(
     userWhereUniqueInput: Prisma.UserWhereUniqueInput,
   ): Promise<User | null> {
-    return this.prisma.user.findUnique({
-      where: userWhereUniqueInput,
-    });
+    try {
+      return this.prisma.user.findUnique({
+        where: userWhereUniqueInput,
+      });
+    } catch (error) {
+      return this.handleError(error);
+    }
   }
 
   async update(params: {
