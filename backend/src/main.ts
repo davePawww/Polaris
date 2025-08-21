@@ -6,7 +6,9 @@ import { AppModule } from './app.module';
 import { cleanupOpenApiDoc } from 'nestjs-zod';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create(AppModule, {
+    logger: ['error', 'warn', 'log', 'debug', 'verbose', 'fatal'],
+  });
   const configService = app.get(ConfigService);
 
   const allowedOrigins = configService.get('ALLOWED_ORIGINS')?.split(',') || [

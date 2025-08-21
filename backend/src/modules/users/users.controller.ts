@@ -41,8 +41,8 @@ export class UsersController {
       },
     ],
   })
-  create(@Body() data: CreateUserSchema) {
-    return this.usersService.create(data);
+  async create(@Body() data: CreateUserSchema) {
+    return await this.usersService.create(data);
   }
 
   @Get()
@@ -58,8 +58,8 @@ export class UsersController {
       },
     ],
   })
-  findMany(@Query() query: FindManyUsersQuerySchema) {
-    return this.usersService.findMany(query);
+  async findMany(@Query() query: FindManyUsersQuerySchema) {
+    return await this.usersService.findMany(query);
   }
 
   @Get(':id')
@@ -75,8 +75,8 @@ export class UsersController {
       },
     ],
   })
-  findOne(@Param('id', ParseUUIDPipe) id: string) {
-    return this.usersService.findOne({ id });
+  async findOne(@Param('id', ParseUUIDPipe) id: string) {
+    return await this.usersService.findOne({ id });
   }
 
   @Patch(':id')
@@ -96,11 +96,11 @@ export class UsersController {
       },
     ],
   })
-  update(
+  async update(
     @Param('id', ParseUUIDPipe) id: string,
     @Body() data: UpdateUserSchema,
   ) {
-    return this.usersService.update({ where: { id }, data });
+    return await this.usersService.update({ where: { id }, data });
   }
 
   @Delete(':id')
@@ -116,7 +116,7 @@ export class UsersController {
       },
     ],
   })
-  delete(@Param('id', ParseUUIDPipe) id: string) {
-    this.usersService.delete({ id });
+  async delete(@Param('id', ParseUUIDPipe) id: string) {
+    await this.usersService.delete({ id });
   }
 }

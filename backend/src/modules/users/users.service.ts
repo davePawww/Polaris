@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { Prisma, User } from '@prisma/client';
 import { createPrismaErrorHandler } from 'src/common/helpers/prisma-errors.util';
 import { PaginationMetadata } from 'src/common/schemas/pagination.schema';
@@ -9,13 +9,13 @@ export class UsersService {
   private readonly handleError = createPrismaErrorHandler('User');
   constructor(private readonly prisma: PrismaService) {}
 
-  async create(data: Prisma.UserCreateInput): Promise<User> {
+  async create(data: Prisma.UserCreateInput): Promise<User | undefined> {
     try {
-      return this.prisma.user.create({
+      return await this.prisma.user.create({
         data,
       });
     } catch (error) {
-      return this.handleError(error);
+      this.handleError(error);
     }
   }
 
@@ -25,10 +25,13 @@ export class UsersService {
     cursor?: Prisma.UserWhereUniqueInput;
     where?: Prisma.UserWhereInput;
     orderBy?: Prisma.UserOrderByWithRelationInput;
-  }): Promise<{
-    data: User[];
-    meta: PaginationMetadata;
-  }> {
+  }): Promise<
+    | {
+        data: User[];
+        meta: PaginationMetadata;
+      }
+    | undefined
+  > {
     const { skip = 0, take = 10, ...rest } = params;
     try {
       const users = await this.prisma.user.findMany({
@@ -56,44 +59,44 @@ export class UsersService {
         },
       };
     } catch (error) {
-      return this.handleError(error);
+      this.handleError(error);
     }
   }
 
   async findOne(
     userWhereUniqueInput: Prisma.UserWhereUniqueInput,
-  ): Promise<User | null> {
+  ): Promise<User | null | undefined> {
     try {
-      return this.prisma.user.findUnique({
+      return await this.prisma.user.findUnique({
         where: userWhereUniqueInput,
       });
     } catch (error) {
-      return this.handleError(error);
+      this.handleError(error);
     }
   }
 
   async update(params: {
     where: Prisma.UserWhereUniqueInput;
     data: Prisma.UserUpdateInput;
-  }): Promise<User> {
+  }): Promise<User | undefined> {
     const { where, data } = params;
     try {
-      return this.prisma.user.update({
+      return await this.prisma.user.update({
         data,
         where,
       });
     } catch (error) {
-      return this.handleError(error);
+      this.handleError(error);
     }
   }
 
-  async delete(where: Prisma.UserWhereUniqueInput): Promise<User> {
+  async delete(where: Prisma.UserWhereUniqueInput) {
     try {
-      return this.prisma.user.delete({
+      await this.prisma.user.delete({
         where,
       });
     } catch (error) {
-      return this.handleError(error);
+      this.handleError(error);
     }
   }
 }

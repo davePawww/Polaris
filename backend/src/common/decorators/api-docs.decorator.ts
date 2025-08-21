@@ -1,5 +1,5 @@
-import { applyDecorators } from '@nestjs/common';
-import { ApiBody, ApiOperation, ApiQuery, ApiResponse } from '@nestjs/swagger';
+import { applyDecorators, HttpCode } from '@nestjs/common';
+import { ApiOperation, ApiResponse } from '@nestjs/swagger';
 
 export function ApiDocs(options: {
   summary: string;
@@ -20,6 +20,10 @@ export function ApiDocs(options: {
       type: options.responseSchema,
     }),
   ];
+
+  if (options.status && options.status !== 200) {
+    decorators.push(HttpCode(options.status));
+  }
 
   if (options.errorResponses) {
     options.errorResponses.forEach((error) => {

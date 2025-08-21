@@ -2,13 +2,13 @@ import { z } from 'zod';
 import { createZodDto } from 'nestjs-zod';
 import { paginatedResponseSchema } from 'src/common/schemas/pagination.schema';
 
-export const createUserSchema = z.object({
+const createUserSchema = z.object({
   clerkId: z.string(),
   role: z.enum(['basic', 'admin']).default('basic'),
   timezone: z.string().optional(),
 });
 
-export const findManyUsersQuerySchema = z.object({
+const findManyUsersQuerySchema = z.object({
   skip: z
     .string()
     .optional()
@@ -31,7 +31,7 @@ export const findManyUsersQuerySchema = z.object({
     .transform((val) => (val ? JSON.parse(val) : undefined)),
 });
 
-export const updateUserSchema = z.object({
+const updateUserSchema = z.object({
   role: z.enum(['basic', 'admin']).optional(),
   timezone: z.string().optional(),
 });
