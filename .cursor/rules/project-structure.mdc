@@ -15,7 +15,7 @@ This document outlines the directory structure and important files in the Polari
 ```
 Polaris/
 ├── .cursor/                    # Cursor IDE configuration and rules
-├── frontend/                   # React + TypeScript frontend application
+├── frontend/                   # Vue.js + TypeScript frontend application
 ├── backend/                    # NestJS + TypeScript backend application
 ├── README.md                   # Project overview and documentation
 └── LICENSE                     # Project license
@@ -31,38 +31,51 @@ Polaris/
 - `tsconfig.json` - TypeScript configuration
 - `tsconfig.app.json` - App-specific TypeScript settings
 - `tsconfig.node.json` - Node.js TypeScript settings
-- `eslint.config.js` - ESLint linting configuration
-- `components.json` - UI component library configuration
+- `eslint.config.ts` - ESLint linting configuration
+- `.prettierrc.json` - Prettier code formatting configuration
 - `index.html` - Main HTML entry point
+- `env.d.ts` - Vite environment type definitions
 
 ### Source Code (`src/`)
 
-- `main.tsx` - React application entry point
-- `App.tsx` - Main React application component
-- `App.css` - Main application styles
-- `index.css` - Global CSS styles
-- `vite-env.d.ts` - Vite environment type definitions
+- `main.ts` - Vue.js application entry point
+- `App.vue` - Main Vue.js application component
+- `router/index.ts` - Vue Router configuration
+- `stores/` - Pinia state management stores
+- `components/` - Reusable Vue components
+- `views/` - Route-specific page components
+- `types/` - TypeScript type definitions
+- `utils/` - Utility functions and helpers
+- `assets/` - Static assets (images, styles, etc.)
 
 #### Components (`src/components/`)
 
-- `ui/` - Reusable UI components
-  - `button.tsx` - Button component implementation
+- Reusable Vue components
+- Use Single File Component (SFC) format with `.vue` extension
+- Implement proper TypeScript interfaces for props and emits
 
-#### Features (`src/features/`)
+#### Views (`src/views/`)
 
-- Currently empty - reserved for feature-based organization
+- Route-specific page components
+- Use for main application pages
+- Implement proper routing and navigation
 
-#### Library (`src/lib/`)
+#### Stores (`src/stores/`)
 
-- `utils.ts` - Utility functions and helpers
+- Pinia state management stores
+- Use for global application state
+- Implement proper TypeScript interfaces
 
-#### Assets (`src/assets/`)
+#### Router (`src/router/`)
 
-- Currently empty - reserved for static assets
+- Vue Router configuration
+- Route definitions and navigation guards
+- Lazy loading for route components
 
 #### Public (`public/`)
 
 - Static files served directly
+- Favicon and other public assets
 
 ## Backend Directory (`backend/`)
 
@@ -100,9 +113,10 @@ Polaris/
 
 ### Frontend
 
-- **React 18** with TypeScript
-- **Vite** for build tooling
-- **Tailwind CSS** (via components.json)
+- **Vue.js 3.5.18** with TypeScript
+- **Vue Router 4.5.1** for client-side routing
+- **Pinia 3.0.3** for state management
+- **Vite 7.0.6** for build tooling
 - **pnpm** for package management
 
 ### Backend
@@ -121,6 +135,15 @@ Polaris/
 5. **Package Management**: Use `pnpm` for both frontend and backend
 
 ## Important Notes
+
+- Both frontend and backend use TypeScript with strict configurations
+- ESLint and Prettier are configured for consistent code style
+- Testing frameworks are set up for both unit and E2E testing
+- The project follows a monorepo structure with separate package.json files
+- Cursor rules are maintained in `.cursor/rules/` for development consistency
+- Frontend uses Vue.js 3 with Composition API and `<script setup>` syntax
+- State management is handled by Pinia stores
+- Routing is managed by Vue Router 4
 
 - Both frontend and backend use TypeScript with strict configurations
 - ESLint and Prettier are configured for consistent code style

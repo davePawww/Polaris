@@ -1,9 +1,10 @@
 @import 'tailwindcss';
-@import "tw-animate-css";
+@import 'tw-animate-css';
 
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
+  /* Colors */
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);
@@ -28,10 +29,14 @@
   --color-chart-3: var(--chart-3);
   --color-chart-4: var(--chart-4);
   --color-chart-5: var(--chart-5);
+
+  /* Radius */
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
+
+  /* Sidebar */
   --color-sidebar: var(--sidebar);
   --color-sidebar-foreground: var(--sidebar-foreground);
   --color-sidebar-primary: var(--sidebar-primary);
@@ -40,6 +45,48 @@
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
+
+  /* Polaris theme */
+  /* Typography scale */
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-base: 1rem;
+  --text-lg: 1.125rem;
+  --text-xl: 1.25rem;
+  --text-2xl: 1.5rem;
+  --text-3xl: 1.875rem;
+  --text-4xl: 2.25rem;
+
+  /* Shadows */
+  --polaris-shadow-sm: 0 2px 4px 0 rgba(0, 0, 0, 0.6);
+  --polaris-shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.8), 0 4px 6px -2px rgba(0, 0, 0, 0.6);
+  --polaris-shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.8), 0 8px 12px -4px rgba(0, 0, 0, 0.6);
+
+  /* Animations */
+  --animation-duration-slow: 4s;
+  --animation-duration-normal: 2s;
+  --animation-duration-fast: 1s;
+  --animation-duration-faster: 0.5s;
+  --animation-duration-fastest: 0.25s;
+
+  /* Easing functions */
+  --ease-linear: linear;
+  --ease-in: cubic-bezier(0.4, 0, 1, 1);
+  --ease-out: cubic-bezier(0, 0, 0.2, 1);
+  --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-bounce: cubic-bezier(0.68, -0.55, 0.265, 1.55);
+
+  /* Stagger delays */
+  --stagger-1: 0.1s;
+  --stagger-2: 0.2s;
+  --stagger-3: 0.3s;
+  --stagger-4: 0.4s;
+  --stagger-5: 0.5s;
+
+  /* Scale factors */
+  --scale-hover: 1.05;
+  --scale-active: 0.95;
+  --scale-focus: 1.02;
 }
 
 :root {
@@ -119,5 +166,21 @@
   }
   body {
     @apply bg-background text-foreground;
+  }
+}
+
+@layer utilities {
+  .polaris-container {
+    @apply mx-auto max-w-7xl px-4 sm:px-6 lg:px-8;
+  }
+
+  .polaris-shadow-sm {
+    box-shadow: var(--polaris-shadow-sm);
+  }
+  .polaris-shadow-md {
+    box-shadow: var(--polaris-shadow-md);
+  }
+  .polaris-shadow-lg {
+    box-shadow: var(--polaris-shadow-lg);
   }
 }
