@@ -5,12 +5,7 @@ import Layout from './components/layout/Layout.vue'
 
 <template>
   <Layout>
-    <div class="flex min-h-svh flex-col items-center justify-center">
-      <Button>Click me</Button>
-      <Button class="polaris-shadow-sm m-4">Click me</Button>
-      <Button class="polaris-shadow-md m-4">Click me</Button>
-      <Button class="polaris-shadow-lg m-4">Click me</Button>
-    </div>
+    <RouterView />
   </Layout>
 </template>
 

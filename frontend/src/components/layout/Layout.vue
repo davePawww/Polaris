@@ -8,7 +8,7 @@ import Container from './Container.vue'
   <div class="bg-background min-h-svh">
     <Header />
     <Container>
-      <main>
+      <main class="flex min-h-svh flex-col items-center justify-center">
         <slot />
       </main>
     </Container>
