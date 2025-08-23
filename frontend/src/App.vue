@@ -1,14 +1,17 @@
 <script setup lang="ts">
 import { Button } from '@/components/ui/button'
+import Layout from './components/layout/Layout.vue'
 </script>
 
 <template>
-  <h1 class="text-3xl font-bold underline text-red-500">You did it!</h1>
-  <Button>Click me</Button>
-  <p>
-    Visit <a href="https://vuejs.org/" target="_blank" rel="noopener">vuejs.org</a> to read the
-    documentation
-  </p>
+  <Layout>
+    <div class="flex min-h-svh flex-col items-center justify-center">
+      <Button>Click me</Button>
+      <Button class="polaris-shadow-sm m-4">Click me</Button>
+      <Button class="polaris-shadow-md m-4">Click me</Button>
+      <Button class="polaris-shadow-lg m-4">Click me</Button>
+    </div>
+  </Layout>
 </template>
 
 <style scoped></style>
