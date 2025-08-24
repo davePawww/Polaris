@@ -18,7 +18,6 @@ import {
   UserResponseSchema,
 } from './schemas/user.schema';
 import { ApiDocs } from 'src/common/decorators/api-docs.decorator';
-import { ApiTags } from '@nestjs/swagger';
 
 @Controller('users')
 export class UsersController {
