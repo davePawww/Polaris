@@ -2,6 +2,6 @@
 
 <template>
   <div>
-    <h1>Wigs</h1>
+    <h1>Notes</h1>
   </div>
 </template>

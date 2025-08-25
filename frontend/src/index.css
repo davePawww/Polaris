@@ -58,7 +58,7 @@
   --text-4xl: 2.25rem;
 
   /* Shadows */
-  --polaris-shadow-sm: 0 2px 4px 0 rgba(0, 0, 0, 0.6);
+  --polaris-shadow-sm: 0 0 3px 0 rgba(0, 0, 0, 0.15);
   --polaris-shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.8), 0 4px 6px -2px rgba(0, 0, 0, 0.6);
   --polaris-shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.8), 0 8px 12px -4px rgba(0, 0, 0, 0.6);
 
@@ -90,7 +90,7 @@
 }
 
 :root {
-  --background: oklch(1 0 0);
+  --background: rgb(255, 255, 255);
   --foreground: oklch(0.145 0 0);
   --card: oklch(1 0 0);
   --card-foreground: oklch(0.145 0 0);
@@ -123,10 +123,11 @@
   --sidebar-accent-foreground: oklch(0.205 0 0);
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.708 0 0);
+  --border: 240 5.9% 90%;
 }
 
 .dark {
-  --background: oklch(0.145 0 0);
+  --background: #2a2a2a;
   --foreground: oklch(0.985 0 0);
   --card: oklch(0.145 0 0);
   --card-foreground: oklch(0.985 0 0);
@@ -158,6 +159,7 @@
   --sidebar-accent-foreground: oklch(0.985 0 0);
   --sidebar-border: oklch(0.269 0 0);
   --sidebar-ring: oklch(0.439 0 0);
+  --border: 240 5.9% 90%;
 }
 
 @layer base {
@@ -171,7 +173,17 @@
 
 @layer utilities {
   .polaris-container {
-    @apply mx-auto max-w-7xl px-4 sm:px-6 lg:px-8;
+    @apply mx-auto max-w-[1600px] px-4 sm:px-6 lg:px-8;
+  }
+
+  .polaris-border {
+    @apply ring-offset-background rounded-md border;
+    border-color: hsl(var(--border) / 0.6);
+  }
+
+  .polaris-border-grid {
+    border-style: dashed;
+    border-color: hsl(var(--border) / 0.5);
   }
 
   .polaris-shadow-sm {

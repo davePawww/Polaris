@@ -1,11 +1,9 @@
-<script setup lang="ts">
-import Container from './Container.vue'
-</script>
+<script setup lang="ts"></script>
 
 <template>
-  <footer class="bg-black text-white">
-    <Container>
+  <footer class="polaris-border-grid h-12 border-t py-6 md:py-0">
+    <div class="polaris-container polaris-border-grid h-full border-r border-l">
       <p>This is the footer</p>
-    </Container>
+    </div>
   </footer>
 </template>

@@ -1,7 +1,7 @@
 <script setup lang="ts"></script>
 
 <template>
-  <div class="polaris-container">
-    <slot />
+  <div>
+    <h1>Calendar</h1>
   </div>
 </template>

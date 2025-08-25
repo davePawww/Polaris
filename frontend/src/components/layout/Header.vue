@@ -1,22 +1,23 @@
 <script setup lang="ts">
 import { SignedIn, SignedOut, SignInButton, UserButton } from '@clerk/vue'
-import Container from './Container.vue'
 </script>
 
 <template>
-  <header class="sticky top-0 z-50 bg-black text-white">
-    <Container>
-      <div class="flex items-center justify-between">
-        <p>This is the header</p>
-        <div>
-          <SignedOut>
-            <SignInButton />
-          </SignedOut>
-          <SignedIn>
-            <UserButton />
-          </SignedIn>
-        </div>
+  <header
+    class="polaris-border-grid bg-background/95 supports-[backdrop-filter]:bg-background/60 sticky top-0 z-50 h-12 w-full border-b backdrop-blur"
+  >
+    <div
+      class="polaris-container polaris-border-grid flex h-full items-center justify-between border-r border-l"
+    >
+      <p>This is the header</p>
+      <div>
+        <SignedOut>
+          <SignInButton />
+        </SignedOut>
+        <SignedIn>
+          <UserButton />
+        </SignedIn>
       </div>
-    </Container>
+    </div>
   </header>
 </template>
