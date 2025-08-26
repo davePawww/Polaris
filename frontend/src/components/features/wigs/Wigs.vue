@@ -1,8 +1,34 @@
 <script setup lang="ts">
-import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { PlusCircleIcon } from '@heroicons/vue/24/outline'
 import WigItem from './components/WigItem.vue'
+import { useWigsStore } from '@/stores/wigs.store'
+import { watch } from 'vue'
+import { useAuth } from '@clerk/vue'
+import { storeToRefs } from 'pinia'
+
+const { isLoaded, isSignedIn, getToken } = useAuth()
+const wigsStore = useWigsStore()
+const { wigs, loading, error } = storeToRefs(wigsStore)
+
+watch(
+  () => isLoaded.value,
+  async (v) => {
+    if (v) {
+      let token: string | undefined = undefined
+      try {
+        if (isSignedIn.value) {
+          token = (await getToken.value()) ?? undefined
+        }
+      } catch (e) {
+        console.error('Failed to get Clerk token', e)
+      }
+
+      await wigsStore.fetchWigs(token)
+    }
+  },
+  { immediate: true },
+)
 </script>
 
 <template>
@@ -19,11 +45,12 @@ import WigItem from './components/WigItem.vue'
       </div>
     </div>
 
-    <div class="mt-6 flex flex-col gap-4">
+    <div v-for="wig in wigs" class="mt-6 flex flex-col gap-4">
+      <WigItem :key="wig.id" :wig="wig" />
+      <!-- <WigItem />
       <WigItem />
       <WigItem />
-      <WigItem />
-      <WigItem />
+      <WigItem /> -->
     </div>
   </div>
 </template>
