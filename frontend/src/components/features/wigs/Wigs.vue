@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import WigItem from './components/WigItem.vue'
 import { useWigsStore } from '@/stores/wigs.store'
-import { watch } from 'vue'
+import { ref, watch } from 'vue'
 import { useAuth } from '@clerk/vue'
 import { storeToRefs } from 'pinia'
 import {
@@ -18,8 +18,19 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { PlusCircleIcon } from '@heroicons/vue/24/outline'
 
+interface CreateWigForm {
+  title: string
+  description: string
+}
+
+const form = ref<CreateWigForm>({
+  title: '',
+  description: '',
+})
+
 const { isLoaded, isSignedIn, getToken } = useAuth()
 const wigsStore = useWigsStore()
+// update the v-for to use fallback loading and handle error states
 const { wigs, loading, error } = storeToRefs(wigsStore)
 
 watch(
@@ -65,23 +76,15 @@ watch(
             <div class="grid gap-4 py-4">
               <div class="grid grid-cols-4 items-center gap-4">
                 <Label for="title" class="text-right"> Title </Label>
-                <Input
-                  id="title"
-                  default-value="A goal that you must do today"
-                  class="col-span-3"
-                />
+                <Input id="title" default-value="A goal that you must do today" class="col-span-3" />
               </div>
               <div class="grid grid-cols-4 items-center gap-4">
                 <Label for="description" class="text-right"> Description </Label>
-                <Input
-                  id="description"
-                  default-value="something about the goal"
-                  class="col-span-3"
-                />
+                <Input id="description" default-value="something about the goal" class="col-span-3" />
               </div>
             </div>
             <DialogFooter>
-              <Button type="submit"> Save changes </Button>
+              <Button @click="console.log('test')"> Save changes </Button>
             </DialogFooter>
           </DialogContent>
         </Dialog>

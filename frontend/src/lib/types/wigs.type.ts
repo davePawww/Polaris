@@ -6,6 +6,12 @@ export interface Wigs {
   updatedAt: string
 }
 
+export interface CreateUpdateWigsDto {
+  title: string
+  description: string
+  completed?: boolean
+}
+
 export interface PaginationMetadata {
   total: number
   page: number
