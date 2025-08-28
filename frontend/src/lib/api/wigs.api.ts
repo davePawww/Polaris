@@ -20,7 +20,7 @@ export const wigsApi = {
 
   async create(data: CreateUpdateWigsDto, options?: { token?: string }): Promise<Wigs> {
     const headers = options?.token ? { Authorization: `Bearer ${options.token}` } : undefined
-    const response = await apiClient.post('/goals', { data }, { headers })
+    const response = await apiClient.post('/goals', data, { headers })
     return response.data
   },
 }

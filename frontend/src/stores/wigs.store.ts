@@ -12,7 +12,11 @@ export const useWigsStore = defineStore('wigs', () => {
     try {
       loading.value = true
       error.value = null
-      const response = await wigsApi.create(data, { token })
+      const payload = {
+        title: data.title,
+        description: data.description,
+      }
+      const response = await wigsApi.create(payload, { token })
       wigs.value.push(response)
     } catch (err) {
       error.value = err instanceof Error ? err.message : 'Failed to create wigs'
