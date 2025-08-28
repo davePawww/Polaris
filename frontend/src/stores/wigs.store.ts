@@ -8,23 +8,6 @@ export const useWigsStore = defineStore('wigs', () => {
   const loading = ref(false)
   const error = ref<string | null>(null)
 
-  const createWigs = async (data: { title: string; description: string }, token?: string) => {
-    try {
-      loading.value = true
-      error.value = null
-      const payload = {
-        title: data.title,
-        description: data.description,
-      }
-      const response = await wigsApi.create(payload, { token })
-      wigs.value.push(response)
-    } catch (err) {
-      error.value = err instanceof Error ? err.message : 'Failed to create wigs'
-    } finally {
-      loading.value = false
-    }
-  }
-
   const fetchWigs = async (token?: string) => {
     try {
       loading.value = true
@@ -43,6 +26,5 @@ export const useWigsStore = defineStore('wigs', () => {
     loading,
     error,
     fetchWigs,
-    createWigs,
   }
 })
