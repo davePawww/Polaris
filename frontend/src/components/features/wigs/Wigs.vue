@@ -4,8 +4,7 @@ import { useWigsStore } from '@/stores/wigs.store'
 import { watch, ref, nextTick } from 'vue'
 import { useAuth } from '@clerk/vue'
 import { storeToRefs } from 'pinia'
-import { PlusCircleIcon } from '@heroicons/vue/24/outline'
-import { Button } from '@/components/ui/button'
+import CreateWigDialog from './components/CreateWigDialog.vue'
 
 const { isLoaded, isSignedIn, getToken } = useAuth()
 const wigsStore = useWigsStore()
@@ -36,9 +35,7 @@ watch(
   <div class="p-4">
     <div class="flex items-center justify-between gap-4">
       <h2 class="text-2xl font-bold">Wigs</h2>
-      <Button>
-        <PlusCircleIcon /> Add a Goal
-      </Button>
+      <CreateWigDialog />
     </div>
     <div v-for="wig in wigs" class="mt-4 flex flex-col gap-4">
       <WigItem :key="wig.id" :wig="wig" />
