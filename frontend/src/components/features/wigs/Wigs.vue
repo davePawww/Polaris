@@ -40,7 +40,7 @@ watch(
         <PlusCircleIcon /> Add a Goal
       </Button>
     </div>
-    <div v-for="wig in wigs" class="mt-6 flex flex-col gap-4">
+    <div v-for="wig in wigs" class="mt-4 flex flex-col gap-4">
       <WigItem :key="wig.id" :wig="wig" />
     </div>
   </div>
