@@ -13,6 +13,7 @@ async function bootstrap() {
 
   const allowedOrigins = configService.get('ALLOWED_ORIGINS')?.split(',') || [
     'http://localhost:5173',
+    'https://polaris-gg.vercel.app/',
   ];
 
   const config = new DocumentBuilder()
