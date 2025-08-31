@@ -1,8 +1,12 @@
-import type { CreateWigDto, PaginatedWigs, QueryParams, Wig } from '../types/wigs.type'
+import type { CreateWigDto, Wig } from '../../components/features/wigs/types/wigs.type'
+import type { PaginatedData, QueryParams } from '../types/shared.type'
 import apiClient from './client'
 
 export const wigsApi = {
-  async findMany(params?: QueryParams<Wig>, options?: { token?: string }): Promise<PaginatedWigs> {
+  async findMany(
+    params?: QueryParams<Wig>,
+    options?: { token?: string },
+  ): Promise<PaginatedData<Wig>> {
     const headers = options?.token ? { Authorization: `Bearer ${options.token}` } : undefined
 
     const response = await apiClient.get('/goals', { params, headers })

@@ -1,4 +1,4 @@
-import type { Wig } from '@/lib/types/wigs.type'
+import type { Wig } from '@/components/features/wigs/types/wigs.type'
 import { ref } from 'vue'
 import { defineStore } from 'pinia'
 import { wigsApi } from '@/lib/api/wigs.api'

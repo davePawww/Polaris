@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import WigItem from './components/WigItem.vue'
 import { useWigsStore } from '@/stores/wigs.store'
-import { watch, ref, nextTick } from 'vue'
+import { watch } from 'vue'
 import { useAuth } from '@clerk/vue'
 import { storeToRefs } from 'pinia'
 import CreateWigDialog from './components/CreateWigDialog.vue'
@@ -9,7 +9,7 @@ import CreateWigDialog from './components/CreateWigDialog.vue'
 const { isLoaded, isSignedIn, getToken } = useAuth()
 const wigsStore = useWigsStore()
 // update the v-for to use fallback loading and handle error states
-const { wigs, loading, error } = storeToRefs(wigsStore)
+const { wigs } = storeToRefs(wigsStore)
 
 watch(
   () => isLoaded.value,
@@ -37,8 +37,8 @@ watch(
       <h2 class="text-2xl font-bold">Wigs</h2>
       <CreateWigDialog />
     </div>
-    <div v-for="wig in wigs" class="mt-4 flex flex-col gap-4">
-      <WigItem :key="wig.id" :wig="wig" />
+    <div v-for="wig in wigs" :key="wig.id" class="mt-4 flex flex-col gap-4">
+      <WigItem :wig="wig" />
     </div>
   </div>
 </template>
