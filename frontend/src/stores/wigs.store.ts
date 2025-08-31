@@ -1,4 +1,4 @@
-import type { Wig } from '@/components/features/wigs/types/wigs.type'
+import type { CreateWigDto, Wig } from '@/components/features/wigs/types/wigs.type'
 import { ref } from 'vue'
 import { defineStore } from 'pinia'
 import { wigsApi } from '@/lib/api/wigs.api'
@@ -7,6 +7,10 @@ export const useWigsStore = defineStore('wigs', () => {
   const wigs = ref<Wig[]>([])
   const loading = ref(false)
   const error = ref<string | null>(null)
+
+  const clearError = () => {
+    error.value = null
+  }
 
   const fetchWigs = async (token?: string) => {
     try {
@@ -21,10 +25,14 @@ export const useWigsStore = defineStore('wigs', () => {
     }
   }
 
-  const createWig = async (data: { title: string; description: string }, token?: string) => {
+  const createWig = async (data: CreateWigDto, token?: string) => {
     try {
       loading.value = true
       error.value = null
+      if (wigs.value.length === 4) {
+        error.value = 'You can only create up to 4 wigs'
+        throw new Error('You can only create up to 4 wigs')
+      }
       const newWig = await wigsApi.create(data, { token })
       wigs.value.push(newWig)
     } catch (err) {
@@ -40,5 +48,6 @@ export const useWigsStore = defineStore('wigs', () => {
     error,
     fetchWigs,
     createWig,
+    clearError,
   }
 })

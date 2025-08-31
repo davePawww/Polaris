@@ -12,10 +12,11 @@ import { PlusCircleIcon } from '@heroicons/vue/24/outline'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 import { useAuth } from '@clerk/vue'
 import { useWigsStore } from '@/stores/wigs.store'
 
+const open = ref(false)
 const { getToken, isSignedIn } = useAuth()
 const wigsStore = useWigsStore()
 
@@ -38,10 +39,14 @@ const submit = async () => {
   await wigsStore.createWig(newWig.value, token)
   newWig.value = { title: '', description: '' }
 }
+
+watch(open, (isOpen) => {
+  if (!isOpen) wigsStore.clearError()
+})
 </script>
 
 <template>
-  <Dialog>
+  <Dialog v-model:open="open">
     <DialogTrigger>
       <Button><PlusCircleIcon /> Add a Goal</Button>
     </DialogTrigger>
@@ -76,6 +81,7 @@ const submit = async () => {
       <DialogFooter>
         <Button @click="submit" type="submit">Create Goal</Button>
       </DialogFooter>
+      <p class="text-sm text-red-500">{{ wigsStore.error }}</p>
     </DialogContent>
   </Dialog>
 </template>
