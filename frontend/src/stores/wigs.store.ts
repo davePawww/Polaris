@@ -2,6 +2,7 @@ import type { CreateWigDto, Wig } from '@/components/features/wigs/types/wigs.ty
 import { ref } from 'vue'
 import { defineStore } from 'pinia'
 import { wigsApi } from '@/lib/api/wigs.api'
+import { AxiosError } from 'axios'
 
 export const useWigsStore = defineStore('wigs', () => {
   const wigs = ref<Wig[]>([])
@@ -36,7 +37,11 @@ export const useWigsStore = defineStore('wigs', () => {
       const newWig = await wigsApi.create(data, { token })
       wigs.value.push(newWig)
     } catch (err) {
-      error.value = err instanceof Error ? err.message : 'Failed to create wig'
+      console.log(err)
+      error.value =
+        err instanceof AxiosError && err.response?.data.message === 'Validation failed'
+          ? 'Required fields missing'
+          : 'Failed to create wig'
     } finally {
       loading.value = false
     }

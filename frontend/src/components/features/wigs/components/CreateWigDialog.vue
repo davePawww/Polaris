@@ -15,17 +15,23 @@ import { Label } from '@/components/ui/label'
 import { ref, watch } from 'vue'
 import { useAuth } from '@clerk/vue'
 import { useWigsStore } from '@/stores/wigs.store'
+import type { CreateWigDto } from '../types/wigs.type'
 
 const open = ref(false)
 const { getToken, isSignedIn } = useAuth()
 const wigsStore = useWigsStore()
 
-const newWig = ref({
+const newWig = ref<CreateWigDto>({
   title: '',
   description: '',
 })
 
 const submit = async () => {
+  if (newWig.value.title.trim() === '') {
+    wigsStore.error = 'Title is required'
+    return
+  }
+
   // handle submission logic here
   let token: string | undefined = undefined
   try {
@@ -58,14 +64,18 @@ watch(open, (isOpen) => {
           maximize focus.
         </DialogDescription>
       </DialogHeader>
-      <div class="grid gap-4 py-4">
+      <div class="grid gap-4 pt-2">
         <div class="grid grid-cols-4 items-center gap-4">
           <Label for="title" class="text-right">Title</Label>
           <Input
             v-model="newWig.title"
             id="title"
+            @focus="wigsStore.error = ''"
             default-value="Input a new goal"
-            class="col-span-3"
+            :class="[
+              'col-span-3',
+              wigsStore.error === 'Title is required' ? 'border-red-500' : 'border-gray-300',
+            ]"
           />
         </div>
         <div class="grid grid-cols-4 items-center gap-4">
@@ -78,10 +88,12 @@ watch(open, (isOpen) => {
           />
         </div>
       </div>
+      <p v-if="wigsStore.error" class="w-full text-right text-sm text-red-500">
+        {{ wigsStore.error }}
+      </p>
       <DialogFooter>
         <Button @click="submit" type="submit">Create Goal</Button>
       </DialogFooter>
-      <p class="text-sm text-red-500">{{ wigsStore.error }}</p>
     </DialogContent>
   </Dialog>
 </template>
