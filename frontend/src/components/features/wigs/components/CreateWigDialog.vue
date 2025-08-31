@@ -12,6 +12,32 @@ import { PlusCircleIcon } from '@heroicons/vue/24/outline'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
+import { ref } from 'vue'
+import { useAuth } from '@clerk/vue'
+import { useWigsStore } from '@/stores/wigs.store'
+
+const { getToken, isSignedIn } = useAuth()
+const wigsStore = useWigsStore()
+
+const newWig = ref({
+  title: '',
+  description: '',
+})
+
+const submit = async () => {
+  // handle submission logic here
+  let token: string | undefined = undefined
+  try {
+    if (isSignedIn.value) {
+      token = (await getToken.value()) ?? undefined
+    }
+  } catch (e) {
+    console.error('Failed to get Clerk token', e)
+  }
+
+  await wigsStore.createWig(newWig.value, token)
+  newWig.value = { title: '', description: '' }
+}
 </script>
 
 <template>
@@ -30,15 +56,25 @@ import { Label } from '@/components/ui/label'
       <div class="grid gap-4 py-4">
         <div class="grid grid-cols-4 items-center gap-4">
           <Label for="title" class="text-right">Title</Label>
-          <Input id="title" default-value="Input a new goal" class="col-span-3" />
+          <Input
+            v-model="newWig.title"
+            id="title"
+            default-value="Input a new goal"
+            class="col-span-3"
+          />
         </div>
         <div class="grid grid-cols-4 items-center gap-4">
           <Label for="description" class="text-right">Description</Label>
-          <Input id="description" default-value="Your goal description" class="col-span-3" />
+          <Input
+            v-model="newWig.description"
+            id="description"
+            default-value="Your goal description"
+            class="col-span-3"
+          />
         </div>
       </div>
       <DialogFooter>
-        <Button type="submit">Create Goal</Button>
+        <Button @click="submit" type="submit">Create Goal</Button>
       </DialogFooter>
     </DialogContent>
   </Dialog>
