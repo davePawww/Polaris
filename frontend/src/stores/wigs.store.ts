@@ -1,4 +1,4 @@
-import type { CreateWigDto, Wig } from '@/components/features/wigs/types/wigs.type'
+import type { CreateWigDto, UpdateWigDto, Wig } from '@/components/features/wigs/types/wigs.type'
 import { ref } from 'vue'
 import { defineStore } from 'pinia'
 import { wigsApi } from '@/lib/api/wigs.api'
@@ -37,11 +37,42 @@ export const useWigsStore = defineStore('wigs', () => {
       const newWig = await wigsApi.create(data, { token })
       wigs.value.push(newWig)
     } catch (err) {
-      console.log(err)
       error.value =
         err instanceof AxiosError && err.response?.data.message === 'Validation failed'
           ? 'Required fields missing'
           : 'Failed to create wig'
+    } finally {
+      loading.value = false
+    }
+  }
+
+  const updateWig = async (id: string, data: UpdateWigDto, token?: string) => {
+    try {
+      loading.value = true
+      error.value = null
+      const updatedWig = await wigsApi.update(id, data, { token })
+      const index = wigs.value.findIndex((wig) => wig.id === id)
+      if (index !== -1) {
+        wigs.value[index] = updatedWig
+      }
+    } catch (err) {
+      error.value =
+        err instanceof AxiosError && err.response?.data.message === 'Validation failed'
+          ? 'Required fields missing'
+          : 'Failed to update wig'
+    } finally {
+      loading.value = false
+    }
+  }
+
+  const deleteWig = async (id: string, token?: string) => {
+    try {
+      loading.value = true
+      error.value = null
+      await wigsApi.delete(id, { token })
+      wigs.value = wigs.value.filter((wig) => wig.id !== id)
+    } catch (err) {
+      error.value = err instanceof Error ? err.message : 'Failed to delete wig'
     } finally {
       loading.value = false
     }
@@ -53,6 +84,8 @@ export const useWigsStore = defineStore('wigs', () => {
     error,
     fetchWigs,
     createWig,
+    updateWig,
+    deleteWig,
     clearError,
   }
 })
