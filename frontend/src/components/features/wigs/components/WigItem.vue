@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import { PencilIcon, TrashIcon } from '@heroicons/vue/24/outline'
+import { CheckIcon, PencilSquareIcon, TrashIcon } from '@heroicons/vue/24/outline'
 import { Card, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { Button } from '@/components/ui/button'
+import WigActionButton from '@/components/WigActionButton.vue'
+// import { useWigsStore } from '@/stores/wigs.store';
 
 const props = defineProps<{
   wig: {
@@ -12,6 +13,8 @@ const props = defineProps<{
     updatedAt: string
   }
 }>()
+
+// const wigsStore = useWigsStore()
 </script>
 
 <template>
@@ -20,12 +23,15 @@ const props = defineProps<{
       <div class="flex items-center justify-between">
         <CardTitle>{{ props.wig.title }}</CardTitle>
         <div class="flex items-center gap-2">
-          <Button>
-            <PencilIcon class="size-4" />
-          </Button>
-          <Button>
-            <TrashIcon class="size-4" />
-          </Button>
+          <WigActionButton>
+            <CheckIcon class="size-4 text-green-600" />
+          </WigActionButton>
+          <WigActionButton>
+            <PencilSquareIcon class="size-4 text-gray-300/85" />
+          </WigActionButton>
+          <WigActionButton>
+            <TrashIcon class="size-4 text-red-600" />
+          </WigActionButton>
         </div>
       </div>
       <CardDescription>{{ props.wig.description }}</CardDescription>

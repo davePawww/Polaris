@@ -195,4 +195,8 @@
   .polaris-shadow-lg {
     box-shadow: var(--polaris-shadow-lg);
   }
+
+  .polaris-wig-action-button {
+    @apply h-7 has-[>svg]:px-2;
+  }
 }
