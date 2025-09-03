@@ -1,20 +1,13 @@
 <script setup lang="ts">
-import { CheckIcon, PencilSquareIcon, TrashIcon } from '@heroicons/vue/24/outline'
+import { CheckIcon, TrashIcon } from '@heroicons/vue/24/outline'
 import { Card, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import WigActionButton from '@/components/WigActionButton.vue'
-// import { useWigsStore } from '@/stores/wigs.store';
+import type { Wig } from '../types/wigs.type'
+import WigDialogBtn from './WigDialogBtn.vue'
 
 const props = defineProps<{
-  wig: {
-    id: string
-    title: string
-    description: string
-    createdAt: string
-    updatedAt: string
-  }
+  wig: Wig
 }>()
-
-// const wigsStore = useWigsStore()
 </script>
 
 <template>
@@ -26,9 +19,7 @@ const props = defineProps<{
           <WigActionButton>
             <CheckIcon class="size-4 text-green-600" />
           </WigActionButton>
-          <WigActionButton>
-            <PencilSquareIcon class="size-4 text-gray-300/85" />
-          </WigActionButton>
+          <WigDialogBtn type="update" :wig="wig" />
           <WigActionButton>
             <TrashIcon class="size-4 text-red-600" />
           </WigActionButton>

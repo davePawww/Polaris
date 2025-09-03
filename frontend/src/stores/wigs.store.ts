@@ -36,6 +36,7 @@ export const useWigsStore = defineStore('wigs', () => {
       }
       const newWig = await wigsApi.create(data, { token })
       wigs.value.push(newWig)
+      return true
     } catch (err) {
       error.value =
         err instanceof AxiosError && err.response?.data.message === 'Validation failed'
@@ -55,6 +56,7 @@ export const useWigsStore = defineStore('wigs', () => {
       if (index !== -1) {
         wigs.value[index] = updatedWig
       }
+      return true
     } catch (err) {
       error.value =
         err instanceof AxiosError && err.response?.data.message === 'Validation failed'
@@ -71,6 +73,7 @@ export const useWigsStore = defineStore('wigs', () => {
       error.value = null
       await wigsApi.delete(id, { token })
       wigs.value = wigs.value.filter((wig) => wig.id !== id)
+      return true
     } catch (err) {
       error.value = err instanceof Error ? err.message : 'Failed to delete wig'
     } finally {

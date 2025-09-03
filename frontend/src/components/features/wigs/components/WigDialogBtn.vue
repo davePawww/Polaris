@@ -8,31 +8,38 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog'
-import { PlusCircleIcon } from '@heroicons/vue/24/outline'
+import { PlusCircleIcon, PencilSquareIcon } from '@heroicons/vue/24/outline'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { ref, watch } from 'vue'
 import { useAuth } from '@clerk/vue'
 import { useWigsStore } from '@/stores/wigs.store'
-import type { CreateWigDto } from '../types/wigs.type'
+import type { Wig, CreateWigDto, UpdateWigDto } from '../types/wigs.type'
+import WigActionButton from '@/components/WigActionButton.vue'
+import { toast } from 'vue-sonner'
+
+const props = defineProps<{
+  type: string
+  wig?: Wig
+}>()
 
 const open = ref(false)
 const { getToken, isSignedIn } = useAuth()
 const wigsStore = useWigsStore()
 
-const newWig = ref<CreateWigDto>({
+const form = ref<CreateWigDto | UpdateWigDto>({
   title: '',
   description: '',
+  completed: false,
 })
 
 const submit = async () => {
-  if (newWig.value.title.trim() === '') {
+  if (form.value.title?.trim() === '') {
     wigsStore.error = 'Title is required'
     return
   }
 
-  // handle submission logic here
   let token: string | undefined = undefined
   try {
     if (isSignedIn.value) {
@@ -42,19 +49,51 @@ const submit = async () => {
     console.error('Failed to get Clerk token', e)
   }
 
-  await wigsStore.createWig(newWig.value, token)
-  newWig.value = { title: '', description: '' }
+  // we also need to add success messages
+  let result: boolean | undefined = undefined
+  if (props.type === 'create') {
+    result = await wigsStore.createWig(form.value as CreateWigDto, token)
+    if (result) {
+      form.value = { title: '', description: '', completed: false }
+      open.value = false
+      toast.success('Goal created successfully!')
+    }
+  } else if (props.type === 'update') {
+    const id = props.wig?.id
+    if (!id) {
+      wigsStore.error = 'Something went wrong. Please try again.'
+      return
+    }
+    result = await wigsStore.updateWig(id, form.value as UpdateWigDto, token)
+    if (result) {
+      open.value = false
+      toast.success('Goal updated successfully!')
+    }
+  } else {
+    wigsStore.error = 'Invalid Wig action type. Please try again.'
+  }
 }
 
 watch(open, (isOpen) => {
   if (!isOpen) wigsStore.clearError()
+
+  if (isOpen && props.type === 'update' && props.wig) {
+    form.value = {
+      title: props.wig.title,
+      description: props.wig.description,
+      completed: props.wig.completed,
+    }
+  } else if (isOpen && props.type === 'create') {
+    form.value = { title: '', description: '', completed: false }
+  }
 })
 </script>
 
 <template>
   <Dialog v-model:open="open">
     <DialogTrigger>
-      <Button><PlusCircleIcon /> Add a Goal</Button>
+      <Button v-if="props.type === 'create'"><PlusCircleIcon /> Add a Goal</Button>
+      <WigActionButton v-else><PencilSquareIcon class="size-4" /></WigActionButton>
     </DialogTrigger>
     <DialogContent>
       <DialogHeader>
@@ -68,10 +107,10 @@ watch(open, (isOpen) => {
         <div class="grid grid-cols-4 items-center gap-4">
           <Label for="title" class="text-right">Title</Label>
           <Input
-            v-model="newWig.title"
+            v-model="form.title"
             id="title"
             @focus="wigsStore.error = ''"
-            default-value="Input a new goal"
+            placeholder="Input a new goal"
             :class="[
               'col-span-3',
               wigsStore.error === 'Title is required' ? 'border-red-500' : 'border-gray-300',
@@ -81,9 +120,9 @@ watch(open, (isOpen) => {
         <div class="grid grid-cols-4 items-center gap-4">
           <Label for="description" class="text-right">Description</Label>
           <Input
-            v-model="newWig.description"
+            v-model="form.description"
             id="description"
-            default-value="Your goal description"
+            placeholder="add a description"
             class="col-span-3"
           />
         </div>
@@ -92,7 +131,10 @@ watch(open, (isOpen) => {
         {{ wigsStore.error }}
       </p>
       <DialogFooter>
-        <Button @click="submit" type="submit">Create Goal</Button>
+        <Button @click="submit" type="submit">
+          <p v-if="props.type === 'create'">Create Goal</p>
+          <p v-else>Update Goal</p>
+        </Button>
       </DialogFooter>
     </DialogContent>
   </Dialog>

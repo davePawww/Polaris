@@ -4,7 +4,7 @@ import { useWigsStore } from '@/stores/wigs.store'
 import { watch } from 'vue'
 import { useAuth } from '@clerk/vue'
 import { storeToRefs } from 'pinia'
-import CreateWigDialog from './components/CreateWigDialog.vue'
+import WigDialogBtn from './components/WigDialogBtn.vue'
 
 const { isLoaded, isSignedIn, getToken } = useAuth()
 const wigsStore = useWigsStore()
@@ -35,7 +35,7 @@ watch(
   <div class="p-4">
     <div class="flex items-center justify-between gap-4">
       <h2 class="text-2xl font-bold">Wigs</h2>
-      <CreateWigDialog />
+      <WigDialogBtn type="create" />
     </div>
     <div v-for="wig in wigs" :key="wig.id" class="mt-4 flex flex-col gap-4">
       <WigItem :wig="wig" />

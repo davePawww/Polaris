@@ -29,7 +29,7 @@ export const wigsApi = {
   async update(id: string, data: UpdateWigDto, options?: { token?: string }): Promise<Wig> {
     const headers = getHeaders(options?.token)
 
-    const response = await apiClient.put(`/goals/${id}`, data, { headers })
+    const response = await apiClient.patch(`/goals/${id}`, data, { headers })
     return response.data
   },
   async delete(id: string, options?: { token?: string }): Promise<void> {
