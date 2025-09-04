@@ -32,7 +32,7 @@ watch(
 </script>
 
 <template>
-  <div class="p-4">
+  <div class="polaris-border polaris-shadow-sm col-start-1 row-span-2 row-start-1 p-4">
     <div class="flex items-center justify-between gap-4">
       <h2 class="text-2xl font-bold">Wigs</h2>
       <WigDialogBtn type="create" />
