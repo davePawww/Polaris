@@ -13,12 +13,21 @@ export const useWigsStore = defineStore('wigs', () => {
     error.value = null
   }
 
+  const sortWigs = () => {
+    wigs.value = wigs.value.slice().sort((a, b) => {
+      const completedDiff = Number(a.completed) - Number(b.completed)
+      if (completedDiff !== 0) return completedDiff
+      return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+    })
+  }
+
   const fetchWigs = async (token?: string) => {
     try {
       loading.value = true
       error.value = null
       const response = await wigsApi.findMany({ orderBy: { createdAt: 'desc' } }, { token })
       wigs.value = response.data
+      sortWigs()
     } catch (err) {
       error.value = err instanceof Error ? err.message : 'Failed to fetch wigs'
     } finally {
@@ -36,6 +45,8 @@ export const useWigsStore = defineStore('wigs', () => {
       }
       const newWig = await wigsApi.create(data, { token })
       wigs.value.push(newWig)
+      sortWigs()
+
       return true
     } catch (err) {
       error.value =
@@ -56,6 +67,7 @@ export const useWigsStore = defineStore('wigs', () => {
       if (index !== -1) {
         wigs.value[index] = updatedWig
       }
+      sortWigs()
       return true
     } catch (err) {
       error.value =
