@@ -18,6 +18,6 @@ export type PaginationMetadata = {
 }
 
 export type PaginatedData<T> = {
-  data: T[]
+  payload: T[]
   meta: PaginationMetadata
 }

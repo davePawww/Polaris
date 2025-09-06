@@ -1,5 +1,4 @@
-import type { MakeReadOnly } from '@/lib/types/shared.type'
-
+import type { MakeReadOnly } from '@/lib/shared.type'
 export type Wig = MakeReadOnly<
   {
     id: string

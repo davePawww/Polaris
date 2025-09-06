@@ -1,8 +1,9 @@
 import type { CreateWigDto, UpdateWigDto, Wig } from '@/components/features/wigs/types/wigs.type'
 import { ref } from 'vue'
 import { defineStore } from 'pinia'
-import { wigsApi } from '@/lib/api/wigs.api'
 import { AxiosError } from 'axios'
+import apiClient from '@/lib/api'
+import type { PaginatedData } from '@/lib/shared.type'
 
 export const useWigsStore = defineStore('wigs', () => {
   const wigs = ref<Wig[]>([])
@@ -17,16 +18,16 @@ export const useWigsStore = defineStore('wigs', () => {
     wigs.value = wigs.value.slice().sort((a, b) => {
       const completedDiff = Number(a.completed) - Number(b.completed)
       if (completedDiff !== 0) return completedDiff
-      return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+      return new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime()
     })
   }
 
-  const fetchWigs = async (token?: string) => {
+  const fetchWigs = async () => {
     try {
       loading.value = true
       error.value = null
-      const response = await wigsApi.findMany({ orderBy: { createdAt: 'desc' } }, { token })
-      wigs.value = response.data
+      const { data } = await apiClient.get<PaginatedData<Wig>>('/goals')
+      wigs.value = data.payload
       sortWigs()
     } catch (err) {
       error.value = err instanceof Error ? err.message : 'Failed to fetch wigs'
@@ -35,7 +36,7 @@ export const useWigsStore = defineStore('wigs', () => {
     }
   }
 
-  const createWig = async (data: CreateWigDto, token?: string) => {
+  const createWig = async (payload: CreateWigDto) => {
     try {
       loading.value = true
       error.value = null
@@ -43,8 +44,8 @@ export const useWigsStore = defineStore('wigs', () => {
         error.value = 'You can only create up to 4 wigs'
         throw new Error('You can only create up to 4 wigs')
       }
-      const newWig = await wigsApi.create(data, { token })
-      wigs.value.push(newWig)
+      const { data } = await apiClient.post<Wig>('/goals', payload)
+      wigs.value.push(data)
       sortWigs()
 
       return true
@@ -58,14 +59,14 @@ export const useWigsStore = defineStore('wigs', () => {
     }
   }
 
-  const updateWig = async (id: string, data: UpdateWigDto, token?: string) => {
+  const updateWig = async (id: string, payload: UpdateWigDto) => {
     try {
       loading.value = true
       error.value = null
-      const updatedWig = await wigsApi.update(id, data, { token })
+      const { data } = await apiClient.patch(`/goals/${id}`, payload)
       const index = wigs.value.findIndex((wig) => wig.id === id)
       if (index !== -1) {
-        wigs.value[index] = updatedWig
+        wigs.value[index] = data
       }
       sortWigs()
       return true
@@ -79,11 +80,11 @@ export const useWigsStore = defineStore('wigs', () => {
     }
   }
 
-  const deleteWig = async (id: string, token?: string) => {
+  const deleteWig = async (id: string) => {
     try {
       loading.value = true
       error.value = null
-      await wigsApi.delete(id, { token })
+      await apiClient.delete(`/goals/${id}`)
       wigs.value = wigs.value.filter((wig) => wig.id !== id)
       return true
     } catch (err) {

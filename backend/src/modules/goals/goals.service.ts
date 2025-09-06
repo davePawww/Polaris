@@ -30,7 +30,7 @@ export class GoalsService {
     clerkId: string,
   ): Promise<
     | {
-        data: Goal[];
+        payload: Goal[];
         meta: PaginationMetadata;
       }
     | undefined
@@ -63,7 +63,7 @@ export class GoalsService {
       const hasPrevious = page > 1;
 
       return {
-        data: goals,
+        payload: goals,
         meta: {
           total,
           page,
