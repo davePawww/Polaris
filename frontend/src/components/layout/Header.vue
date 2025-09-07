@@ -10,7 +10,7 @@ import PolarisLight from '@/assets/Polaris-light.svg'
     <div
       class="polaris-container polaris-border-grid flex h-full items-center justify-between border-r border-l"
     >
-      <img :src="PolarisLight" alt="Polaris Light Logo" class="h-12" />
+      <img :src="PolarisLight" alt="Polaris Light Logo" class="-ml-4 h-12" />
       <div>
         <SignedOut>
           <SignInButton />

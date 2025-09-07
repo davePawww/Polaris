@@ -168,6 +168,9 @@
   }
   body {
     @apply bg-background text-foreground;
+    font-family: 'JetBrains Mono', monospace;
+    font-optical-sizing: auto;
+    font-style: normal;
   }
 }
 
