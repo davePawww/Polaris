@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { SignedIn, SignedOut, SignInButton, UserButton } from '@clerk/vue'
-import PolarisLight from '@/assets/polaris-light.svg'
+import PolarisLight from '@/assets/Polaris-light.svg'
 </script>
 
 <template>
