@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { SignedIn, SignedOut, SignInButton, UserButton } from '@clerk/vue'
+import PolarisLight from '@/assets/polaris-light.svg'
 </script>
 
 <template>
@@ -9,7 +10,7 @@ import { SignedIn, SignedOut, SignInButton, UserButton } from '@clerk/vue'
     <div
       class="polaris-container polaris-border-grid flex h-full items-center justify-between border-r border-l"
     >
-      <p>This is the header</p>
+      <img :src="PolarisLight" alt="Polaris Light Logo" class="h-12" />
       <div>
         <SignedOut>
           <SignInButton />
