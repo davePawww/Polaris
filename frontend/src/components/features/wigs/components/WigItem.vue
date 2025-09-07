@@ -4,40 +4,32 @@ import { Card, CardDescription, CardHeader, CardTitle } from '@/components/ui/ca
 import WigActionButton from '@/components/WigActionButton.vue'
 import type { Wig } from '../types/wigs.type'
 import WigDialogBtn from './WigDialogBtn.vue'
-import { useAuth } from '@clerk/vue'
 import { useWigsStore } from '@/stores/wigs.store'
+import { toast } from 'vue-sonner'
 
 const props = defineProps<{
   wig: Wig
 }>()
-
-const { getToken, isSignedIn } = useAuth()
 const wigsStore = useWigsStore()
 
 const update = async () => {
-  let token: string | undefined = undefined
   try {
-    if (isSignedIn.value) {
-      token = (await getToken.value()) ?? undefined
-    }
-  } catch (e) {
-    console.error('Failed to get Clerk token', e)
+    await wigsStore.updateWig(props.wig.id, { ...props.wig, completed: !props.wig.completed })
+    toast.success(`Wig marked as ${props.wig.completed ? 'incomplete' : 'complete'}`)
+  } catch (error) {
+    toast.error(`Failed to update wig`)
+    console.error(error)
   }
-
-  await wigsStore.updateWig(props.wig.id, { ...props.wig, completed: !props.wig.completed }, token)
 }
 
 const deleteWig = async () => {
-  let token: string | undefined = undefined
   try {
-    if (isSignedIn.value) {
-      token = (await getToken.value()) ?? undefined
-    }
-  } catch (e) {
-    console.error('Failed to get Clerk token', e)
+    await wigsStore.deleteWig(props.wig.id)
+    toast.success('Wig deleted successfully')
+  } catch (error) {
+    toast.error('Failed to delete wig')
+    console.error(error)
   }
-
-  await wigsStore.deleteWig(props.wig.id, token)
 }
 </script>
 

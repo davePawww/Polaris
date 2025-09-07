@@ -13,7 +13,6 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { ref, watch } from 'vue'
-import { useAuth } from '@clerk/vue'
 import { useWigsStore } from '@/stores/wigs.store'
 import type { Wig, CreateWigDto, UpdateWigDto } from '../types/wigs.type'
 import WigActionButton from '@/components/WigActionButton.vue'
@@ -25,7 +24,6 @@ const props = defineProps<{
 }>()
 
 const open = ref(false)
-const { getToken, isSignedIn } = useAuth()
 const wigsStore = useWigsStore()
 
 const form = ref<CreateWigDto | UpdateWigDto>({
@@ -40,19 +38,9 @@ const submit = async () => {
     return
   }
 
-  let token: string | undefined = undefined
-  try {
-    if (isSignedIn.value) {
-      token = (await getToken.value()) ?? undefined
-    }
-  } catch (e) {
-    console.error('Failed to get Clerk token', e)
-  }
-
-  // we also need to add success messages
   let result: boolean | undefined = undefined
   if (props.type === 'create') {
-    result = await wigsStore.createWig(form.value as CreateWigDto, token)
+    result = await wigsStore.createWig(form.value as CreateWigDto)
     if (result) {
       form.value = { title: '', description: '', completed: false }
       open.value = false
@@ -64,7 +52,7 @@ const submit = async () => {
       wigsStore.error = 'Something went wrong. Please try again.'
       return
     }
-    result = await wigsStore.updateWig(id, form.value as UpdateWigDto, token)
+    result = await wigsStore.updateWig(id, form.value as UpdateWigDto)
     if (result) {
       open.value = false
       toast.success('Goal updated successfully!')
