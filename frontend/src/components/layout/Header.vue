@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { SignedIn, SignedOut, SignInButton, UserButton } from '@clerk/vue'
 import PolarisLight from '@/assets/Polaris-light.svg'
-import { Cog8ToothIcon, ClockIcon } from '@heroicons/vue/24/solid'
+import Preferences from '../Preferences.vue'
+import PomodoroSettings from '../PomodoroSettings.vue'
 </script>
 
 <template>
@@ -18,25 +19,8 @@ import { Cog8ToothIcon, ClockIcon } from '@heroicons/vue/24/solid'
         </SignedOut>
         <SignedIn>
           <UserButton>
-            <UserButton.UserProfilePage label="Preferences" url="preferences">
-              <template #labelIcon>
-                <Cog8ToothIcon />
-              </template>
-              <div>
-                <h1>Help Page</h1>
-                <p>This is the custom help page</p>
-              </div>
-            </UserButton.UserProfilePage>
-
-            <UserButton.UserProfilePage label="Pomodoro Settings" url="pomodoroSettings">
-              <template #labelIcon>
-                <ClockIcon />
-              </template>
-              <div>
-                <h1>Help Page</h1>
-                <p>This is the custom help page</p>
-              </div>
-            </UserButton.UserProfilePage>
+            <Preferences />
+            <PomodoroSettings />
           </UserButton>
         </SignedIn>
       </div>
