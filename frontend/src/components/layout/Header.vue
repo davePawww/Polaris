@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { SignedIn, SignedOut, SignInButton, UserButton } from '@clerk/vue'
 import PolarisLight from '@/assets/Polaris-light.svg'
+import { Cog8ToothIcon, ClockIcon } from '@heroicons/vue/24/solid'
 </script>
 
 <template>
@@ -19,9 +20,7 @@ import PolarisLight from '@/assets/Polaris-light.svg'
           <UserButton>
             <UserButton.UserProfilePage label="Preferences" url="preferences">
               <template #labelIcon>
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="currentColor">
-                  <path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512z"></path>
-                </svg>
+                <Cog8ToothIcon />
               </template>
               <div>
                 <h1>Help Page</h1>
@@ -31,9 +30,7 @@ import PolarisLight from '@/assets/Polaris-light.svg'
 
             <UserButton.UserProfilePage label="Pomodoro Settings" url="pomodoroSettings">
               <template #labelIcon>
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="currentColor">
-                  <path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512z"></path>
-                </svg>
+                <ClockIcon />
               </template>
               <div>
                 <h1>Help Page</h1>
