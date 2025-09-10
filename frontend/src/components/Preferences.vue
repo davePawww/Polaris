@@ -1,19 +1,17 @@
 <script setup lang="ts">
-import { ref } from 'vue'
-import { useColorMode } from '@vueuse/core'
 import { UserButton } from '@clerk/vue'
 import { Cog8ToothIcon, SunIcon, MoonIcon } from '@heroicons/vue/24/solid'
 import { Switch } from '@/components/ui/switch'
 import { Label } from '@/components/ui/label'
+import { useTheme } from '@/composables/useTheme'
 
-const mode = useColorMode()
-const isDark = ref(false)
+const { colorMode, isDark } = useTheme()
 const toggleTheme = () => {
   isDark.value = !isDark.value
   if (isDark.value) {
-    mode.value = 'dark'
+    colorMode.value = 'dark'
   } else {
-    mode.value = 'light'
+    colorMode.value = 'light'
   }
 }
 </script>
