@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { CheckIcon, TrashIcon } from '@heroicons/vue/24/outline'
+import { TrashIcon } from '@heroicons/vue/24/solid'
+import { CheckCircleIcon } from '@heroicons/vue/24/outline'
 import { Card, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import WigActionButton from '@/components/WigActionButton.vue'
 import type { Wig } from '../types/wigs.type'
@@ -40,9 +41,9 @@ const deleteWig = async () => {
         <CardTitle :class="props.wig.completed ? 'text-gray-500 line-through' : 'text-black'">{{
           props.wig.title
         }}</CardTitle>
-        <div class="flex items-center gap-2">
+        <div class="flex items-center gap-1">
           <WigActionButton @click="update">
-            <CheckIcon class="size-4 text-green-600" />
+            <CheckCircleIcon class="size-5 text-green-600" />
           </WigActionButton>
           <WigDialogBtn type="update" :wig="wig" />
           <WigActionButton @click="deleteWig">
